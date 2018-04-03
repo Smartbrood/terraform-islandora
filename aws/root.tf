@@ -15,7 +15,7 @@ provider "random" {
     version    = "1.1.0"
 }
 
-module "key-pair" {
+module "key_pair" {
     source          = "./modules/terraform-aws-key-pair"
     public_key_path = "${var.public_key_path}"
 }
@@ -74,9 +74,9 @@ module "ec2_islandora" {
   count                       = "1"
   ami                         = "${module.ubuntu1604.ami_id}"
   instance_type               = "t2.medium"
-  key_name                    = "${aws_key_pair.this.key_name}"
+  key_name                    = "${module.key_pair.key_name}"
   iam_instance_profile        = "${module.ec2_iam_role_islandora.profile_name}"
-  subnet_id                   = "${data.terraform_remote_state.root.network_values["subnet_infrastructure_public_zone_a"]}"
+  subnet_id                   = "${module.vpc.values["public_subnet_a"]}"
   vpc_security_group_ids      = ["${module.security_group.id}"]
   associate_public_ip_address = true
   monitoring                  = false
