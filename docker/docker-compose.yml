@@ -1,0 +1,20 @@
+version: '3.2'
+services:
+  countly:
+    image: countly/countly-server
+    ports:
+      - "32768:80"
+    volumes:
+      - countly_volume:/var/lib/mongodb
+
+volumes:
+  countly_volume:
+
+
+
+
+
+
+
+
+
