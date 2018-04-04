@@ -1,0 +1,14 @@
+petrov@h:~/repo/upwork/claw_vagrant$ vagrant up
+
+
+    default:  // Import the listed configuration changes?: yes.                              
+    default:  [error]  Drupal\Core\Config\ConfigImporterException: There were errors validating the config synchronization. in Drupal\Core\Config\ConfigImporter->validate() (line 728 of /var/www/html/drupal/web/core/lib/Drupal/Core/Config/ConfigImporter.php). 
+    default:  [error]  The import failed due to the following reasons:
+    default: Configuration <em class="placeholder">filehash.settings</em> depends on the <em class="placeholder">filehash</em> extension that will not be installed after import.
+    default: Configuration <em class="placeholder">jwt.config</em> depends on the <em class="placeholder">jwt</em> extension that will not be installed after import.
+    default: Configuration <em class="placeholder">key.key.islandora_rsa_key</em> depends on the <em class="placeholder">key</em> extension that will not be installed after import. 
+The SSH command responded with a non-zero exit status. Vagrant
+assumes that this means the command failed. The output for this command
+should be in the log above. Please read the output to determine what
+went wrong.
+
