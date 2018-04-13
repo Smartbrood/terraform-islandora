@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   drupal:
-    image: drupal/fpm-alpine
+    image: drupal:latest
     ports:
       - "8080:80"
     volumes:
@@ -17,7 +17,9 @@ services:
   postgres:
     image: postgres:9.6
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_USER:     drupal
+      POSTGRES_PASSWORD: drupal
+      POSTGRES_DB:       drupal
     restart: always
 
 
