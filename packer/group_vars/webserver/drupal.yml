@@ -44,5 +44,6 @@ drupal_enable_modules:
   - facets
 drupal_trusted_hosts:
   - ^localhost$
+  - ^claw.dev$
 drupal_trusted_hosts_file: "{{ drupal_core_path }}/sites/default/settings.php"
 drupal_public_filesystem: "{{ drupal_core_path }}/sites/default/files"

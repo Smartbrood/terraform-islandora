@@ -21,7 +21,7 @@
       "region": "fra1",
       "size": "s-1vcpu-3gb",
       "ssh_username": "root",
-      "snapshot_name": "islandora-1.0.0",
+      "snapshot_name": "islandora-1.0.1",
       "snapshot_regions": ["fra1"]
     }
 

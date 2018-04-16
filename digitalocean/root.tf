@@ -18,7 +18,7 @@ resource "digitalocean_ssh_key" "default" {
 }
 
 data "digitalocean_image" "islandora" {
-  name = "islandora-1.0.0"
+  name = "islandora-1.0.1"
 }
 
 resource "digitalocean_droplet" "islandora" {
