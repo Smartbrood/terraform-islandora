@@ -1,2 +1,2 @@
 # terraform-islandora
-Islandora CLAW with Terraform and Docker
+Islandora CLAW with Packer, Ansible and Terraform. 
