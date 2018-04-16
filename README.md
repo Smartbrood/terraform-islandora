@@ -7,7 +7,7 @@ Islandora CLAW with Packer, Ansible and Terraform.
 Make Image
 ----------
 
-cd packer
+**cd packer**
 
 
 Add DigitalOcean API Tocken to packer/variables.json
@@ -17,7 +17,7 @@ Add DigitalOcean API Tocken to packer/variables.json
 }
 ```
 
-make build
+**make build**
 
 
 Deploy
