@@ -9,7 +9,7 @@
     },
     {
       "type": "ansible",
-      "playbook_file": "./playbook.yml",
+      "playbook_file": "../ansible/playbook.yml",
       "groups": ["karaf", "database", "tomcat", "solr", "crayfish", "webserver"]
     }
   ],
