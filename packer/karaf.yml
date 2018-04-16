@@ -1,0 +1,9 @@
+---
+
+- hosts: karaf
+  become: yes
+
+  roles:
+    - Islandora-Devops.karaf
+    - Islandora-Devops.apix
+    - Islandora-Devops.alpaca

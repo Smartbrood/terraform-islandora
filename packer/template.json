@@ -1,0 +1,29 @@
+{
+  "variables": {
+    "api_token":  ""
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["apt install -y python"]
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./playbook.yml",
+      "groups": ["karaf", "database", "tomcat", "solr", "crayfish", "webserver"]
+    }
+  ],
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "{{ user `api_token` }}",
+      "image": "ubuntu-16-04-x64",
+      "region": "fra1",
+      "size": "s-1vcpu-3gb",
+      "ssh_username": "root",
+      "snapshot_name": "islandora-1.0.0",
+      "snapshot_regions": ["fra1"]
+    }
+
+  ]
+}

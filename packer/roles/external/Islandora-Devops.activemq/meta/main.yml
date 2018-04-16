@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  description: "Installs Activemq"
+  license: "license (GPLv3)"
+  min_ansible_version: 2.0
+  max_ansible_version: 2.3
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - xenial
+  galaxy_tags:
+    - islandora
+    - CLAW
+    - message:queues
+    - messaging
+dependencies: []

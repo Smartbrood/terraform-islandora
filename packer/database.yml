@@ -1,0 +1,15 @@
+---
+
+- hosts: database
+  become: yes
+
+  pre_tasks:
+    - set_fact:
+        claw_db: 'mysql'
+      when: claw_db is not defined
+
+  roles:
+    - role: geerlingguy.mysql
+      when: claw_db == 'mysql'
+    - role: geerlingguy.postgresql
+      when: claw_db == 'pgsql'

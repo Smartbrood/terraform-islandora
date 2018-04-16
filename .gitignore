@@ -104,3 +104,6 @@ terraform.tfvars
 .terraform/
 aws_credentials
 .DS_Store
+packer/variables.json
+digitalocean/terraform.tfstate
+digitalocean/terraform.tfstate.backup

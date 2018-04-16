@@ -1,0 +1,12 @@
+---
+- hosts: all
+
+  roles:
+    - role: Islandora-Devops.tomcat8
+      tomcat8_java_opts:
+        - -Djava.awt.headless=true
+        - -Xmx128m
+        - -XX:+UseConcMarkSweepGC
+        - -Dcom.bigdata.rdf.sail.webapp.ConfigParams.propertyFile={{ blazegraph_home_dir }}/conf/RWStore.properties
+    - role: role_under_test
+      blazegraph_webxml_template: no

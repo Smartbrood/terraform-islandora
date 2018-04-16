@@ -1,0 +1,12 @@
+---
+
+- hosts: crayfish
+  become: yes
+
+  roles:
+    - geerlingguy.apache
+    - geerlingguy.php
+    - geerlingguy.git
+    - geerlingguy.composer
+    - Islandora-Devops.crayfish
+

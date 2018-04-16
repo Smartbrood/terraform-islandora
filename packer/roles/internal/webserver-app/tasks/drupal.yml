@@ -1,0 +1,100 @@
+---
+
+- name: Trusted Host Settings
+  blockinfile:
+    state: present
+    block: |
+      $settings['trusted_host_patterns'] = array(
+      {% for host in drupal_trusted_hosts %}
+        '{{ host }}',
+      {% endfor %}
+      );
+    path: "{{ drupal_trusted_hosts_file }}"
+    marker: // {mark} ANSIBLE MANAGED BLOCK
+
+- name: Uninstall core search module
+  command: "{{ drush_path }} -y pm-uninstall search"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  register: uninstall_search
+  changed_when: "'successfully uninstalled' in uninstall_search.stdout"
+
+- name: Get Carapace status
+  command: "{{ drush_path }} pm-list --format=json"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  register: carapace_enabled
+  changed_when: false
+
+- name: Enable Carapace if not enabled
+  command: "{{ drush_path }} then -y carapace"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  when: ((carapace_enabled.stdout|from_json).carapace.status|lower) != 'enabled'
+
+- name: Test if theme is Carapace
+  command: "{{ drush_path }} -y config-get system.theme default"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  register: drupal_theme_carapace
+  changed_when: false
+  check_mode: no
+
+- name: Set theme to carapace
+  command: "{{ drush_path }} -y config-set system.theme default carapace"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  when: "'carapace' not in drupal_theme_carapace.stdout"
+
+- name: Set permissions on the public files directory
+  file:
+    recurse: yes
+    state: directory
+    path: "{{ drupal_public_filesystem }}"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
+
+- name: Create drupal configs directory.
+  file:
+    state: directory
+    path: "{{ webserver_app_drupal_config_path }}"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
+
+- name: Copy drupal config
+  copy:
+    src: "."
+    dest: "{{ webserver_app_drupal_config_path }}/"
+    mode: "0644"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
+  register: drupal_config
+
+- name: Install config
+  command: "{{ drush_path }} config-import -y --partial --source={{ webserver_app_drupal_config_path }}"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  when: drupal_config.changed is defined and drupal_config.changed
+
+- name: Set default solr server to point to CLAW core
+  command: "{{ drush_path }} -y config-set search_api.server.default_solr_server backend_config.connector_config.core CLAW"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  register: set_search_api_config
+  changed_when: "'Do you want to update' in set_search_api_config.stdout"
+
+- name: Get solr config files to copy
+  command: "find {{ webserver_document_root }}/drupal/web/modules/contrib/search_api_solr/solr-conf/6.x -type f"
+  register: files_to_copy
+  changed_when: false
+
+- name: Copy solr config files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ solr_instance_conf_path }}"
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}"
+    remote_src: True
+  with_items:
+   - "{{ files_to_copy.stdout_lines }}"
+  notify: restart solr
