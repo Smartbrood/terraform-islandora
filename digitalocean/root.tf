@@ -18,13 +18,13 @@ resource "digitalocean_ssh_key" "default" {
 }
 
 data "digitalocean_image" "islandora" {
-  name = "islandora-1.0.1"
+  name = "islandora-8.0.0"
 }
 
 resource "digitalocean_droplet" "islandora" {
     image  = "${data.digitalocean_image.islandora.image}"
     #image  = "ubuntu-16-04-x64"
-    name   = "islandora"
+    name   = "islandora8"
     region = "${var.region}"
     size   = "${var.size}"
     ssh_keys = ["${digitalocean_ssh_key.default.fingerprint}"]
@@ -32,7 +32,7 @@ resource "digitalocean_droplet" "islandora" {
 }
 
 resource "digitalocean_tag" "islandora" {
-    name = "islandora"
+    name = "islandora8"
 }
 
 
