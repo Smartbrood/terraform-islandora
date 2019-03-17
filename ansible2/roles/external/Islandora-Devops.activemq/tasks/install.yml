@@ -10,7 +10,7 @@
 
 - name: Download and unarchive get_url
   get_url:
-    src: http://archive.apache.org/dist/activemq/{{ activemq_version }}/apache-activemq-{{ activemq_version }}-bin.tar.gz
+    url: http://archive.apache.org/dist/activemq/{{ activemq_version }}/apache-activemq-{{ activemq_version }}-bin.tar.gz
     dest: "/tmp/apache-activemq-{{ activemq_version }}-bin.tar.gz"
 
 - name: Download and unarchive

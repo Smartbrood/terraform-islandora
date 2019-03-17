@@ -141,7 +141,7 @@
 
 
 - name: Unarchive pdf.js library get_url
-  unarchive:
+  get_url:
     url: "https://github.com/mozilla/pdf.js/releases/download/v2.0.943/pdfjs-2.0.943-dist.zip"
     dest: "/tmp/pdfjs-2.0.943-dist.zip"
 
