@@ -1,0 +1,33 @@
+---
+
+# Version of Syn to install
+fcrepo_syn_version: 0.3.0
+
+# Where to store Syn
+fcrepo_syn_folder: /opt/syn
+
+# User for the tomcat container
+fcrepo_syn_user: tomcat8
+
+# Tomcat home
+fcrepo_syn_tomcat_home: /var/lib/tomcat8
+
+# Where to save the public key
+fcrepo_syn_default_public_key_path: "{{ fcrepo_syn_tomcat_home }}/conf/public.key"
+
+# The HTTP header to put the roles on
+fcrepo_syn_auth_header:
+
+# Configured sites
+fcrepo_syn_sites: []
+# - url:
+#   algorithm:
+#   encoding:
+#   anonymous:
+#   default:
+#   path:
+#   key:
+fcrepo_syn_tokens: []
+# - user:
+# - roles:
+# - token:

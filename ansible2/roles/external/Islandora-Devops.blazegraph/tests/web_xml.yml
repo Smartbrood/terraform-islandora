@@ -1,0 +1,6 @@
+---
+- hosts: all
+
+  roles:
+    - Islandora-Devops.tomcat8
+    - role_under_test

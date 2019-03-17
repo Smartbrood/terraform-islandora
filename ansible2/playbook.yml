@@ -1,0 +1,12 @@
+---
+
+- include: bootstrap.yml
+  tags:
+    - bootstrap
+- include: database.yml
+- include: solr.yml
+- include: webserver.yml
+- include: tomcat.yml
+- include: crayfish.yml
+- include: karaf.yml
+- include: post-install.yml

@@ -1,0 +1,13 @@
+---
+
+- name: Create Gemini DB User (pgsql)
+  postgresql_user:
+    name: "{{ crayfish_db_user }}"
+    password: "{{ crayfish_db_password }}"
+
+- name: Create Gemini DB (pgsql)
+  postgresql_db:
+    name: "{{ crayfish_db_name }}"
+    state: present
+    owner: "{{ crayfish_db_user }}"
+  register: gemini_db_exists

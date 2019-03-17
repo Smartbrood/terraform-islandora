@@ -5,12 +5,12 @@
   "provisioners": [
     {
       "type": "shell",
-      "inline": ["apt install -y python"]
+      "inline": ["apt install -y python unzip"]
     },
     {
       "type": "ansible",
-      "playbook_file": "../ansible/playbook.yml",
-      "groups": ["karaf", "database", "tomcat", "solr", "crayfish", "webserver"]
+      "playbook_file": "../ansible2/playbook.yml",
+      "groups": ["all", "karaf", "database", "tomcat", "solr", "crayfish", "webserver"]
     }
   ],
   "builders": [
@@ -21,7 +21,7 @@
       "region": "fra1",
       "size": "s-1vcpu-3gb",
       "ssh_username": "root",
-      "snapshot_name": "islandora-1.0.1",
+      "snapshot_name": "islandora-8.0.0",
       "snapshot_regions": ["fra1"]
     }
 

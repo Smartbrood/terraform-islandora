@@ -1,0 +1,13 @@
+---
+
+- name: Gemini composer install
+  composer:
+    command: install
+    working_dir: "{{ crayfish_install_dir }}/Gemini"
+
+- name: Gemini migrate db
+  shell: php bin/console --no-interaction migrations:migrate
+  args:
+    chdir: "{{ crayfish_install_dir }}/Gemini"
+  register: gemini_migrate
+  changed_when: '"No migrations to execute." not in gemini_migrate.stdout'

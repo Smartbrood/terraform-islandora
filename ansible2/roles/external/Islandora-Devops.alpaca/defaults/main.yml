@@ -1,0 +1,54 @@
+---
+
+alpaca_from_source: no
+
+alpaca_version: master
+alpaca_clone_directory: /opt/alpaca
+
+alpaca_karaf_repos:
+  - mvn:ca.islandora.alpaca/islandora-karaf/LATEST/xml/features
+
+alpaca_features:
+  - islandora-http-client
+  - islandora-indexing-triplestore
+  - islandora-indexing-fcrepo
+  - islandora-connector-derivative
+
+alpaca_karaf_dir: /opt/karaf
+alpaca_karaf_etc_dir: "{{ alpaca_karaf_dir }}/etc"
+alpaca_karaf_deploy_dir: "{{ alpaca_karaf_dir }}/deploy"
+alpaca_karaf_user: karaf
+alpaca_local_mvn_path: /opt/maven/repo
+
+alpaca_settings:
+  - pid: ca.islandora.alpaca.http.client
+    settings:
+      token.value: islandora
+  - pid: ca.islandora.alpaca.indexing.triplestore
+    settings:
+      error.maxRedeliveries: 10
+      index.stream: activemq:queue:islandora-indexing-triplestore-index
+      delete.stream: activemq:queue:islandora-indexing-triplestore-delete
+      triplestore.baseUrl: http://localhost:8080/bigdata/namespace/islandora/sparql
+  - pid: ca.islandora.alpaca.indexing.fcrepo
+    settings:
+      error.maxRedeliveries: 5
+      node.stream: activemq:queue:islandora-indexing-fcrepo-content
+      node.delete.stream: activemq:queue:islandora-indexing-fcrepo-delete
+      media.stream: activemq:queue:islandora-indexing-fcrepo-media
+      file.stream: activemq:queue:islandora-indexing-fcrepo-file
+      file.delete.stream: activemq:queue:islandora-indexing-fcrepo-file-delete
+      milliner.baseUrl: http://localhost:8000/milliner/
+      gemini.baseUrl: http://localhost:8000/gemini/
+
+alpaca_blueprint_settings:
+  - pid: ca.islandora.alpaca.connector.houdini
+    in_stream: activemq:queue:islandora-connector-houdini
+    derivative_service_url: http://localhost:8000/houdini/convert
+    error_max_redeliveries: 5
+    camel_context_id: IslandoraConnectorHoudini
+  - pid: ca.islandora.alpaca.connector.homarus
+    in_stream: activemq:queue:islandora-connector-homarus
+    derivative_service_url: http://localhost:8000/homarus/convert
+    error_max_redeliveries: 5
+    camel_context_id: IslandoraConnectorHomarus

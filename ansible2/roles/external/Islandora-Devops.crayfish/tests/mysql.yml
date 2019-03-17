@@ -1,0 +1,11 @@
+---
+- hosts: all
+
+  roles:
+    - geerlingguy.apache
+    - geerlingguy.php
+    - geerlingguy.composer
+    - geerlingguy.git
+    - geerlingguy.mysql
+    - role: role_under_test
+      crayfish_db: mysql

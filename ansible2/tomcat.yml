@@ -1,0 +1,13 @@
+---
+
+- hosts: tomcat
+  become: yes
+
+  roles:
+    - Islandora-Devops.tomcat8
+    - Islandora-Devops.fcrepo
+    - Islandora-Devops.fcrepo-syn
+    - Islandora-Devops.blazegraph
+    - Islandora-Devops.grok
+    - Islandora-Devops.cantaloupe
+    - Islandora-Devops.activemq

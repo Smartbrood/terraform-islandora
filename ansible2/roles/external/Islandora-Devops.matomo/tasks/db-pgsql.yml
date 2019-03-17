@@ -1,0 +1,39 @@
+---
+
+- name: Create Matomo DB User (pgsql)
+  postgresql_user:
+    name: "{{ matomo_db_user }}"
+    password: "{{ matomo_db_password }}"
+
+- name: Create Matomo DB (pgsql)
+  postgresql_db:
+    name: "{{ matomo_db_name }}"
+    state: present
+    owner: "{{ matomo_db_user }}"
+  register: matomo_db_exists
+
+
+#- name: Unarchive masonry library.
+#  unarchive:
+#    src: "https://builds.matomo.org/piwik.zip"
+#    dest: "/var/www/html/"
+#    creates: "{{ drupal_external_libraries_directory }}/matomo"
+#    remote_src: yes
+
+- name: Unarchive masonry library. get_url
+  get_url:
+    src: "https://builds.matomo.org/piwik.zip"
+    dest: "/tmp/piwik.zip"
+
+- name: Unarchive masonry library.
+  unarchive:
+    src: "/tmp/piwik.zip"
+    dest: "/var/www/html/"
+    creates: "{{ drupal_external_libraries_directory }}/matomo"
+    remote_src: yes
+
+- name: Rename masonry directory.
+  command: mv "{{ drupal_external_libraries_directory }}/masonry-3.3.2" "{{ drupal_external_libraries_directory }}/masonry"
+  args:
+    creates: "{{ drupal_external_libraries_directory }}/masonry"
+

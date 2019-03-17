@@ -1,0 +1,51 @@
+---
+
+- name: Install Openseadragon with composer
+  composer:
+    command: require
+    arguments: "{{ openseadragon_composer_item }}"
+    working_dir: "{{ openseadragon_composer_root }}"
+  become: no
+
+- name: Check if Seadragon Library Exists
+  stat:
+    path: "{{ openseadragon_composer_root }}/web/sites/all/assets/vendor/openseadragon"
+  register: openseadragon_library_dir
+
+- name: Create folder for library
+  file:
+    state: directory
+    path: "{{ openseadragon_composer_root }}/web/sites/all/assets/vendor"
+  when: not openseadragon_library_dir.stat.exists
+
+#- name: Unarchive seadragon library
+#  unarchive:
+#    remote_src: yes
+#    src: https://github.com/openseadragon/openseadragon/releases/download/v{{ openseadragon_version }}/openseadragon-bin-{{ openseadragon_version }}.tar.gz
+#    dest: "{{ openseadragon_temp_folder }}"
+#  when: not openseadragon_library_dir.stat.exists
+
+
+- name: Unarchive seadragon library get_url
+  get_url:
+    url: "https://github.com/openseadragon/openseadragon/releases/download/v{{ openseadragon_version }}/openseadragon-bin-{{ openseadragon_version }}.tar.gz"
+    dest: "{{ openseadragon_temp_folder }}/seadragon.tar.gz"
+  when: not openseadragon_library_dir.stat.exists
+
+
+- name: Unarchive seadragon library create dir
+  file:
+    path: "{{ openseadragon_temp_folder }}/extracted"
+    state: directory
+    mode: 0755
+
+- name: Unarchive seadragon library unarhive
+  unarchive:
+    remote_src: yes
+    src: "{{ openseadragon_temp_folder }}/seadragon.tar.gz"
+    dest: "{{ openseadragon_temp_folder }}/extracted"
+  when: not openseadragon_library_dir.stat.exists
+
+- name: Move library into place
+  command: mv {{ openseadragon_temp_folder }}/extracted/openseadragon-bin-{{ openseadragon_version }} {{ openseadragon_composer_root }}/web/sites/all/assets/vendor/openseadragon
+  when: not openseadragon_library_dir.stat.exists

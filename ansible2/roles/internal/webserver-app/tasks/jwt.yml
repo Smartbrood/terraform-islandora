@@ -1,0 +1,36 @@
+---
+
+- name: Create JWT Key Path
+  file:
+    state: directory
+    path: "{{ webserver_app_jwt_key_path }}"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
+
+- name: Get SSL keys
+  include_role:
+    name: Islandora-Devops.keymaster
+  vars:
+    ssl_key_private_output_path: "{{ webserver_app_jwt_key_path }}/private.key"
+
+- name: Create JWT Config Path
+  file:
+    state: directory
+    path: "{{ webserver_app_jwt_config_path }}"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
+
+- name: Copy Templated Drupal JWT Configuration
+  template:
+    src: "{{ item }}"
+    dest: "{{ webserver_app_jwt_config_path }}/{{ item }}"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
+  with_items:
+    - jwt.config.yml
+    - key.key.islandora_rsa_key.yml
+  register: drupal_jwt_config
+
+- name: Import JWT Config Into Drupal
+  command: "{{ drush_path }} --root {{ drupal_core_path }} config-import -y --partial --source={{ webserver_app_jwt_config_path }}"
+  when: drupal_jwt_config.changed is defined and drupal_jwt_config.changed
